@@ -10,15 +10,9 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
+  outputs = inputs@{ nixpkgs, home-manager, ... }:
   let
     inherit (nixpkgs) lib;
-
-    util = import ./lib {
-      inherit system pkgs home-manager lib; overlays = (pkgs.overlays);
-    };
-
-    inherit (utils) user host;
 
     pkgs = import nixpkgs {
       inherit system;
@@ -28,8 +22,6 @@
     };
     
     system = "x86_64-linux";
-
-    homeManagerSysDataPath = "/etc/hmsystemdata.json";
 
     # Every once in a while, a new NixOS release may change configuration
     # defaults in a way incompatible with stateful data. For instance, if the
@@ -45,34 +37,29 @@
     # you are sure that you can or have migrated all state on your system which
     # is affected by this option.
     stateVersion = "23.05"; # Did you read the comment?
-  in {
-      homeManagerConfigurations = {
-        filip = user.makeHomeManagerUser {
-          inherit stateVersion homeManagerSysDataPath;
-          
-        };
-      };
 
+    utils = import ./lib {
+      inherit pkgs home-manager system lib stateVersion;
+    };
+
+    # inherit (utils) host;
+  in {
       nixosConfigurations = {
-        laptop = host.makeHost {
-          inherit stateVersion homeManagerSysDataPath;
-          name = "laptop";
-          networkInterfaces = [ "enp7s0" "wlan0" ];
-          kernelPackages = pkgs.linuxPackages;
-          initrdMods = [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
-          kernelMods = [ "kvm-intel" ];
-          kernelParams = [ "nvidia_drm.modeset=1" ];
-          systemConfig = {
-            # your abstracted system config
-          };
-          users = [{
-            name = "filip";
-            groups = [ "wheel" "networkmanager" "video", "input", "audio" ];
-            uid = 1000;
-            shell = pkgs.zsh;
-          }];
-          cpuCores = 6;
-        };
+        niflheimr = utils.makeSystem "niflheimr";
+        # niflheimr = lib.nixosSystem {
+        #   inherit system;
+
+        #   modules = [
+        #     ./system/configuration.nix
+        #     home-manager.nixosModules.home-manager {
+        #       home-manager = {
+        #         useGlobalPkgs = true;
+        #         useUserPackages = true;
+        #         users.filip = import ./users/filip/home.nix;
+        #       };
+        #     }
+        #   ];
+        # };
       };
     };
 }

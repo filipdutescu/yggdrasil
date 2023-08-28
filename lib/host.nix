@@ -1,61 +1,92 @@
-{ system, pkgs, home-manager, lib, user, homeManagerSysDataPath, ... }:
-with builtins; {
-  makeHost = {
+{ pkgs, home-manager, system, lib, ... }:
+with builtins; rec {
+  makeUser = { name, groups, uid, shell, ... }: {
+    users.groups."${name}" = {};
+    users.users."${name}" = {
+      inherit uid;
+      inherit name;
+      inherit shell;
+      isNormalUser = true;
+      group = "${name}";
+      extraGroups = groups;
+      initialPassword = "nixos";
+    };
+  };
+
+  makeHostConfiguration = {
     name,
-    networkInterfaces,
-    wifiInterfaces,
+    usernames,
+    systemPackages ? [],
+    networkInterfaceNames,
     initrdMods,
+    initrdKernelMods ? [],
     kernelMods,
-    kernelParams,
-    kernelPackages,
+    kernelParams ? [],
+    kernelPackages ? [],
     cpuCores,
-    stateVersion,
     }:
     let
       networkInterfaces = listToAttrs (map (ni: {
         name = "${ni}";
         value = {
-          useDHCP = true;
+          useDHCP = lib.mkDefault true;
         };
-      }) networkInterfaces);
+      }) networkInterfaceNames);
 
-      sys_users = (map (u: user.makeSystemUser u) users);
-    in lib.nixosSystem {
-      inherit system;
+      users = (map (u: makeUser u) usernames);
+    in {
+      # Use the systemd-boot EFI boot loader.
+      boot.loader = {
+        systemd-boot.enable = true;
+        efi.canTouchEfiVariables = true;
+      };
 
-      modules = [
-        {
-          # enable flake support
-          nix = {
-            package = pkgs.nixFlakes;
-            extraOptions = ''
-              experimental-features = nix-command flakes
-            '';
-          };
-        }
-        {
-          # kernel settings
-          boot.initrd.availableKernelModules = initrdMods;
-          boot.kernelModules = kernelMods;
-          boot.kernelParams = kernelParams;
-          boot.kernelPackages = kernelPackages;
+      # kernel settings
+      boot.initrd = {
+        availableKernelModules = initrdMods;
+        kernelModules = initrdKernelMods;
+      };
+      boot.kernelModules = kernelMods;
+      boot.kernelParams = kernelParams;
+      boot.kernelPackages = kernelPackages;
+      boot.extraModulePackages = [];
 
+      # networking
+      networking = {
+        hostName = "${name}";
+        interfaces = networkInterfaces;
+        networkmanager.enable = true;
+        useDHCP = false;
+      };
 
-          # networking
-          networking = {
-            hostName = "${name}";
-            interfaces = networkInterfaces;
-            wireless.interfaces = wifiInterfaces;
-            networkmanager.enable = true;
-            useDHCP = false;
-          };
+      # NixOS specific settings
+      nixpkgs.pkgs = pkgs;
+      nixpkgs.hostPlatform = lib.mkDefault system;
+      nix.maxJobs = lib.mkDefault cpuCores;
 
-          # NixOS specific settings
-          nixpkgs.pkgs = pkgs;
-          nix.maxJobs = lib.mkDefault cpuCores;
+      system.stateVersion = stateVersion;
+    };
 
-          system.stateVersion = stateVersion;
-        }
-      ];
+  makeHardware = with lib.attrsets; {
+    luksDeviceName,
+    luksDevice,
+    fileSystemEntries,
+    cpuFreqGovernor,
+    cpu,
+  }:
+  let
+    fileSystems = mergeAttrsList (map (fs: {
+      fileSystems."${fs.path}" = {
+        inherit (fs) device fsType options;
+      };
+    }) fileSystemEntries);
+  in mergeAttrsList [
+    fileSystems
+    {
+      boot.initrd.luks.devices."${luksDeviceName}".device = luksDevice;
+    
+      powerManagement.cpuFreqGovernor = cpuFreqGovernor;
+      hardware.cpu = cpu;
     }
+  ];
 }

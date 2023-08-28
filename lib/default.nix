@@ -1,5 +1,14 @@
-{ pkgs, home-manager, system, lib, overlays, ... }:
-rec {
-  user = import ./user.nix { inherit pkgs home-manager lib system overlays; };
-  host = import ./host.nix { inherit system pkgs home-manager lib user; };
+{ pkgs, home-manager, system, lib, ... }:
+{
+  makeSystem = hostname: let
+    coreModules = import ../common/modules.nix { inherit pkgs; };
+
+    hostModules = import ../hosts/${hostname} { inherit home-manager; };
+  in lib.nixosSystem {
+    inherit system;
+    
+    modules = hostModules ++ [
+      coreModules
+    ];
+  };
 }

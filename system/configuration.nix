@@ -5,6 +5,13 @@
 { config, pkgs, ... }:
 
 {
+  nix = {
+    package = pkgs.nixFlakes;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  };
+
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -13,7 +20,6 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-label/NIXCRYPT";
 
   networking.hostName = "niflheimr"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -29,13 +35,17 @@
 
   # Select internationalisation properties.
   i18n = {
-    defaultLocale = "en_US.UTF-8/UTF-8";
+    defaultLocale = "en_US.UTF-8";
     supportedLocales = [
       "C.UTF-8/UTF-8"
+      "en_GB.UTF-8/UTF-8"
       "en_US.UTF-8/UTF-8"
       "ro_RO.UTF-8/UTF-8"
       "es_ES.UTF-8/UTF-8"
     ];
+    extraLocaleSettings = {
+      LC_TIME = "en_GB.UTF-8";
+    };
   };
   # console = {
   #   font = "Lat2-Terminus16";
@@ -72,12 +82,6 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
     initialPassword = "nixos";
-    packages = with pkgs; [
-      delta
-      git
-      git-crypt
-      gnupg
-    ];
   };
 
   # List packages installed in system profile. To search, run:
@@ -98,12 +102,23 @@
     enable = true;
     #enableSSHSupport = true;
   };
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    enableBashCompletion = true;
+
+    setOptions = [
+      "AUTO_CD"
+      "NOMATCH"
+    ];
+
+    syntaxHighlighting.enable = true;
+  };
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  # services.openssh.enable = true;
   services.pipewire = {
     enable = true;
     audio.enable = true;
@@ -131,6 +146,5 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
-
 }
 
