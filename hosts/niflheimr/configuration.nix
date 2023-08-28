@@ -20,11 +20,11 @@
   sound.enable = pkgs.lib.mkForce false;
   hardware.pulseaudio.enable = pkgs.lib.mkForce false;
 
-  users.users.filip = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
-    initialPassword = "nixos";
-  };
+  # users.users.filip = {
+  #   isNormalUser = true;
+  #   extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+  #   initialPassword = "nixos";
+  # };
 
   programs.gnupg.agent = {
     enable = true;
