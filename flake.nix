@@ -41,25 +41,9 @@
     utils = import ./lib {
       inherit pkgs home-manager system lib stateVersion;
     };
-
-    # inherit (utils) host;
   in {
       nixosConfigurations = {
         niflheimr = utils.makeSystem "niflheimr";
-        # niflheimr = lib.nixosSystem {
-        #   inherit system;
-
-        #   modules = [
-        #     ./system/configuration.nix
-        #     home-manager.nixosModules.home-manager {
-        #       home-manager = {
-        #         useGlobalPkgs = true;
-        #         useUserPackages = true;
-        #         users.filip = import ./users/filip/home.nix;
-        #       };
-        #     }
-        #   ];
-        # };
       };
     };
 }
