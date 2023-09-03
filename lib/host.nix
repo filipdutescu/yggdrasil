@@ -2,36 +2,36 @@
 with builtins; rec {
   makeHost = {
     name,
-    networkInterfaceNames,
-    stateVersion,
-  }:
-  let
-    networkInterfaces = listToAttrs (map (ni: {
-      name = "${ni}";
-      value = {
-        useDHCP = lib.mkDefault true;
+    systemPackages ? [],
+    # networkInterfaceNames,
+    stateVersion
+    }:
+    let
+      # networkInterfaces = listToAttrs (map (ni: {
+      #   name = "${ni}";
+      #   value = {
+      #     useDHCP = lib.mkDefault true;
+      #   };
+      # }) networkInterfaceNames);
+    in {
+      # Use the systemd-boot EFI boot loader.
+      boot.loader = {
+        systemd-boot.enable = true;
+        efi.canTouchEfiVariables = true;
       };
-    }) networkInterfaceNames);
-  in {
-    # Use the systemd-boot EFI boot loader.
-    boot.loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
+
+      # networking
+      networking = {
+        hostName = "${name}";
+        # interfaces = networkInterfaces;
+        networkmanager.enable = true;
+        # useDHCP = false;
+      };
+
+      # NixOS specific settings
+      nixpkgs.pkgs = pkgs;
+      system.stateVersion = stateVersion;
     };
-
-    # networking
-    networking = {
-      hostName = "${name}";
-      interfaces = networkInterfaces;
-      networkmanager.enable = true;
-      useDHCP = false;
-    };
-
-    # NixOS specific settings
-    nixpkgs.pkgs = pkgs;
-
-    system.stateVersion = stateVersion;
-  };
 
   makeHardware = with lib.attrsets; {
     luksDeviceName,
@@ -63,6 +63,8 @@ with builtins; rec {
 
     boot.initrd.luks.devices."${luksDeviceName}".device = luksDevice;
     fileSystems = fileSystemPaths;
+
+    swapDevices = [];
   
     nixpkgs.hostPlatform = lib.mkDefault system;
     powerManagement.cpuFreqGovernor = lib.mkDefault cpuFreqGovernor;

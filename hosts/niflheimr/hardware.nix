@@ -6,6 +6,8 @@ in hostUtils.makeHardware {
   luksDevice = "/dev/disk/by-uuid/3b7d6d12-4d2d-4c88-9f34-584bc23af5fc";
   initrdMods = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   kernelMods = [ "kvm-intel" ];
+  cpuFreqGovernor = "powersave";
+  cpu = { intel.updateMicrocode = lib.mkDefault true; };
   fileSystemEntries = [
     {
       path = "/";
@@ -31,6 +33,4 @@ in hostUtils.makeHardware {
       fsType = "vfat";
     }
   ];
-  cpuFreqGovernor = "powersave";
-  cpu = { intel.updateMicrocode = lib.mkDefault true; };
 }
