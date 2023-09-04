@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # This value determines the Home Manager release that your configuration is
@@ -34,6 +34,10 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  imports = [
+    ../../profiles/zsh
+  ];
+
   programs.git = {
     enable = true;
 
@@ -66,48 +70,6 @@
       pull = {
         rebase = true;
       };
-    };
-  };
-
-  programs.zsh = {
-    enable = true;
-    # enableAutoSuggestions = true;
-
-    # profileExtra = ''
-    #   if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-    #     exec Hyprland
-    #   fi
-    # '';
-
-    shellAliases = {
-      adios = "shutdown now";
-      cp = "cp -i";
-      dt = "delta";
-      grep = "rg --color=auto";
-      la = "ls -lA --color=auto";
-      ll = "ls -l --color=auto";
-      ls = "ls --color=auto";
-      z = "zellij";
-
-      # git related aliases
-      ga = "git add";
-      gb = "git branch";
-      gck = "git checkout";
-      gcn = "git clone";
-      gcm = "git commit";
-      gf = "git fetch";
-      gd = "git diff";
-      gl = "git log";
-      gmg = "git merge";
-      gpl = "git pull";
-      gph = "git push";
-      grs = "git reset";
-      grb = "git rebase";
-      grm = "git remote";
-      gsh = "git stash";
-      gss = "git status";
-      gt = "git tag";
-      gw = "git worktree";
     };
   };
 
