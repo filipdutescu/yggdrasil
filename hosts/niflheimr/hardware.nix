@@ -1,6 +1,6 @@
-{ pkgs, home-manager, system, lib, ... }:
+{ pkgs, system, lib, ... }:
 let
-  hostUtils = import ../../lib/host.nix { inherit pkgs home-manager system lib; };
+  hostUtils = import ../../lib/host.nix { inherit pkgs system lib; };
 in hostUtils.makeHardware {
   luksDeviceName = "cryptroot";
   luksDevice = "/dev/disk/by-uuid/3b7d6d12-4d2d-4c88-9f34-584bc23af5fc";

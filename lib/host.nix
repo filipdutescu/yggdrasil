@@ -1,18 +1,18 @@
-{ pkgs, home-manager, system, lib, ... }:
-with builtins; rec {
+{ pkgs, system, lib, ... }:
+with builtins; {
   makeHost = {
     name,
     systemPackages ? [],
-    # networkInterfaceNames,
+    networkInterfaceNames,
     stateVersion
     }:
     let
-      # networkInterfaces = listToAttrs (map (ni: {
-      #   name = "${ni}";
-      #   value = {
-      #     useDHCP = lib.mkDefault true;
-      #   };
-      # }) networkInterfaceNames);
+      networkInterfaces = listToAttrs (map (ni: {
+        name = "${ni}";
+        value = {
+          useDHCP = lib.mkDefault true;
+        };
+      }) networkInterfaceNames);
     in {
       # Use the systemd-boot EFI boot loader.
       boot.loader = {
@@ -23,9 +23,14 @@ with builtins; rec {
       # networking
       networking = {
         hostName = "${name}";
-        # interfaces = networkInterfaces;
+
+        # careful with the interfaces, the wifi one seems to be fragile
+        # using the original `hardware-configuration.nix` it is happy
+        # moving it to this setup, with a function, sometimes it allows it
+        # sometimes it is angry at the one disturbing its sleep
+        interfaces = networkInterfaces;
+        useDHCP = false;
         networkmanager.enable = true;
-        # useDHCP = false;
       };
 
       # NixOS specific settings
@@ -53,21 +58,27 @@ with builtins; rec {
     }) fileSystemEntries);
   in {
     # kernel settings
-    boot.initrd = {
-      availableKernelModules = initrdMods;
-      kernelModules = initrdKernelMods;
-    };
-    boot.kernelModules = kernelMods;
-    boot.kernelParams = kernelParams;
-    boot.extraModulePackages = [];
+    boot = {
+      initrd = {
+        availableKernelModules = initrdMods;
+        kernelModules = initrdKernelMods;
 
-    boot.initrd.luks.devices."${luksDeviceName}".device = luksDevice;
+        luks.devices."${luksDeviceName}".device = luksDevice;
+      };
+      kernelModules = kernelMods;
+      kernelParams = kernelParams;
+      extraModulePackages = [];
+    };
+
     fileSystems = fileSystemPaths;
 
     swapDevices = [];
   
     nixpkgs.hostPlatform = lib.mkDefault system;
     powerManagement.cpuFreqGovernor = lib.mkDefault cpuFreqGovernor;
-    hardware.cpu = cpu;
+    hardware = {
+      cpu = cpu;
+      enableRedistributableFirmware = lib.mkDefault true;
+    };
   };
 }
