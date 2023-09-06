@@ -37,6 +37,7 @@
   imports = [
     ../../profiles/git
     ../../profiles/helix
+    ../../profiles/zellij
     ../../profiles/zsh
   ];
 
