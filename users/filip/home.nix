@@ -17,6 +17,9 @@
     gnupg
     htop
     (nerdfonts.override { fonts = [ "FiraCode" ]; })
+    rustup
+    steam
+    thunderbird
     zellij
   ];
 
@@ -28,7 +31,12 @@
   };
 
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    BROWSER = "firefox";
+    EDITOR = "hx";
+    MOZ_ENABLE_WAYLAND = 1;
+    PATH = "PATH=$HOME/.cargo/bin:$PATH";
+    TERM = "alacritty";
+    VISUAL = "hx";
   };
 
   # Let Home Manager install and manage itself.

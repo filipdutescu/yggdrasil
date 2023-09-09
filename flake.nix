@@ -18,7 +18,10 @@
       inherit system;
 
       config.allowUnfreePredicate = pkg:
-        builtins.elem (lib.getName pkgs) [];
+        builtins.elem (lib.getName pkg) [
+          "steam"
+          "steam-original"
+        ];
     };
     
     system = "x86_64-linux";
