@@ -2,6 +2,10 @@
 {
   nix = {
     package = pkgs.nixFlakes;
+    gc = {
+      automatic = true;
+      dates = "weekly";
+    };
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
