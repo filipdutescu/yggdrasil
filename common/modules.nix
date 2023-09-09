@@ -7,6 +7,7 @@
     '';
   };
    
+  environment.defaultPackages = [];
   environment.systemPackages = with pkgs; [
     alacritty
     curl
