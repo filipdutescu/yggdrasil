@@ -19,6 +19,14 @@ with builtins; {
         systemd-boot.enable = true;
         efi.canTouchEfiVariables = true;
       };
+      boot = {
+        initrd.systemd.enable = true;
+
+        plymouth = {
+          enable = true;
+          logo = "${pkgs.nixos-icons}/share/icons/hicolor/48x48/apps/nix-snowflake.png";
+        };
+      };
 
       # networking
       networking = {
