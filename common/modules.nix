@@ -15,9 +15,11 @@
   environment.systemPackages = with pkgs; [
     alacritty
     curl
+    fd
+    firefox
     git
     helix
-    firefox
+    lsd
     ripgrep
     zsh
   ];
@@ -25,10 +27,11 @@
   environment.shellAliases = {
     adios = "shutdown now";
     cp = "cp -i";
+    fd = "fd --color=auto";
     grep = "rg --color=auto";
-    la = "ls -lA --color=auto";
-    ll = "ls -l --color=auto";
-    ls = "ls --color=auto";
+    la = "lsd -lA --color=auto";
+    ll = "lsd -l --color=auto";
+    ls = "lsd --color=auto";
 
     # git related aliases
     ga = "git add";
