@@ -8,9 +8,12 @@
     delta = {
       enable = true;
       options = {
-        navigate = true;    # use n and N to move between diff sections
+        hyperlinks = true;
         light = false;      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+        line-numbers = true;
+        navigate = true;    # use n and N to move between diff sections
         side-by-side = true;
+        whitespace-error-style = "22 reverse";
       };
     };
 
@@ -20,6 +23,14 @@
     };
 
     extraConfig = {
+      core = {
+        whitespace = "space-before-tab, trailing-space";
+      };
+
+      diff = {
+        colorMoved = "default";
+      };
+
       fetch = {
         prune = true;
       };

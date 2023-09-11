@@ -1,5 +1,29 @@
 {
-  # Zellij does not benefit from proper KDL support from home-manager
+  programs.zellij = {
+    enable = true;
 
-  home.file.".config/zellij/config.kdl".source = ./config.kdl;
+    enableZshIntegration = true;
+
+    settings = {
+      keybinds = {
+        session = {
+          bind = {
+            _args = [ "Ctrl o" ];
+            SwitchToMode = "Normal";
+          };
+        };
+
+        shared_except = {
+          _args = [ "session" "locked" ];
+          bind = {
+            _args = [ "Ctrl e" ];
+            SwitchToMode = "Session";
+          };
+        };
+      };
+
+      theme = "springan";
+      themes.springan = import ./themes/springan.nix;
+    };
+  };
 }
