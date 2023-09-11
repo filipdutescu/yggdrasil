@@ -3,7 +3,6 @@
     enable = true;
 
     enableZshIntegration = true;
-    defaultKeymap = "vicmd";
 
     settings = {
       keybinds = {
