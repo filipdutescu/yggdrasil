@@ -8,7 +8,6 @@
     git-crypt
     gnupg
     htop
-    (nerdfonts.override { fonts = [ "FiraCode" ]; })
     rustup
     steam
     thunderbird
@@ -38,6 +37,7 @@
     ../../profiles/git
     ../../profiles/helix
     ../../profiles/starship
+    ../../profiles/wezterm
     ../../profiles/zellij
     ../../profiles/zsh
   ];
