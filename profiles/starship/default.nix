@@ -13,6 +13,7 @@ in {
 
       scan_timeout = 10;
 
+      nix_shell.heuristic = true;
       username.format = "[$user]($style) ";
     }
     // modules
