@@ -10,7 +10,7 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, ... }:
   let
     inherit (nixpkgs) lib;
 

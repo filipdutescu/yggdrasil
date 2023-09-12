@@ -8,7 +8,7 @@
       keybinds = {
         session = {
           bind = {
-            _args = [ "Ctrl o" ];
+            _args = [ "Ctrl e" ];
             SwitchToMode = "Normal";
           };
         };

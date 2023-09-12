@@ -1,6 +1,6 @@
 { home-manager, ... }:
 {
-  makeUser = { name, groups, uid ? null, shell ? null, ... }: {
+  makeUser = { stateVersion, name, groups, uid ? null, shell ? null, ... }: {
     imports = [ home-manager.nixosModules.home-manager ];
 
     users = {
@@ -19,6 +19,7 @@
       useUserPackages = true;
 
       users."${name}" = import ../users/${name}/home.nix;
+      extraSpecialArgs = { inherit stateVersion; };
     };
   };
 }

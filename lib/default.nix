@@ -1,9 +1,9 @@
-{ pkgs, home-manager, system, lib, ... }:
+{ pkgs, home-manager, system, lib, stateVersion, ... }:
 {
   makeSystem = hostname: let
     coreModules = import ../common/modules.nix { inherit pkgs; };
 
-    hostModules = import ../hosts/${hostname} { inherit pkgs home-manager system lib; };
+    hostModules = import ../hosts/${hostname} { inherit pkgs home-manager system lib stateVersion; };
   in lib.nixosSystem {
     inherit system;
     
