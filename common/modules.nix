@@ -14,6 +14,7 @@
   environment.defaultPackages = [];
   environment.systemPackages = with pkgs; [
     alacritty
+    bat
     curl
     fd
     firefox
