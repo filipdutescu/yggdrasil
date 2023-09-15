@@ -26,7 +26,6 @@
     EDITOR = "hx";
     MOZ_ENABLE_WAYLAND = 1;
     PATH = "PATH=$HOME/.cargo/bin:$PATH";
-    TERM = "alacritty";
     VISUAL = "hx";
   };
 

@@ -13,7 +13,6 @@
    
   environment.defaultPackages = [];
   environment.systemPackages = with pkgs; [
-    alacritty
     bat
     curl
     fd
@@ -22,6 +21,7 @@
     helix
     lsd
     ripgrep
+    wezterm
     zsh
   ];
 
