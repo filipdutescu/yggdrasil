@@ -20,7 +20,12 @@ with builtins; {
         efi.canTouchEfiVariables = true;
       };
       boot = {
-        initrd.systemd.enable = true;
+        initrd = {
+          verbose = false;
+          systemd.enable = true;
+        };
+        consoleLogLevel = 0;
+        kernelParams = [ "quiet" "udev.log_level=3" ];
 
         plymouth = {
           enable = true;
