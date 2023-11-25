@@ -12,7 +12,7 @@ in [
   (userUtils.makeUser {
     inherit stateVersion;
     name = "filip";
-    groups = [ "wheel" "networkmanager" ];
+    groups = [ "wheel" "networkmanager" "libvirtd"];
   })
   hardwareConfiguration
   {
@@ -20,9 +20,5 @@ in [
         ./desktop.nix
         ./localization.nix
       ];
-
-    # networking.useDHCP = false;
-    # networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
-    # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
   }
 ]
