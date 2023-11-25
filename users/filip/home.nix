@@ -4,8 +4,8 @@
 
   home.packages = with pkgs; [
     delta
+    gcc
     git
-    git-crypt
     gnupg
     htop
     rustup
