@@ -6,6 +6,10 @@
 
     settings = {
       keybinds = {
+        unbind = {
+          _args = [ "Ctrl o" ];
+        };
+
         session = {
           bind = {
             _args = [ "Ctrl e" ];
