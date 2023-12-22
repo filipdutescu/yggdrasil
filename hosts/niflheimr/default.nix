@@ -12,7 +12,7 @@ in [
   (userUtils.makeUser {
     inherit stateVersion;
     name = "filip";
-    groups = [ "wheel" "networkmanager" "libvirtd"];
+    groups = [ "wheel" "networkmanager" "libvirtd" ];
   })
   hardwareConfiguration
   {

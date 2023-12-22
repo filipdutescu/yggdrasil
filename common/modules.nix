@@ -11,6 +11,7 @@
     '';
   };
    
+  # do not install anything by default
   environment.defaultPackages = [];
   environment.systemPackages = with pkgs; [
     bat
