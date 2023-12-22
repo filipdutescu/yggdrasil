@@ -33,6 +33,7 @@
   programs.home-manager.enable = true;
 
   imports = [
+    ../../profiles/direnv
     ../../profiles/git
     ../../profiles/helix
     ../../profiles/starship
