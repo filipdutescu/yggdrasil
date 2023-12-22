@@ -2,6 +2,7 @@
 {
   environment.systemPackages = with pkgs; [
     spotify
+    ungoogled-chromium
   ];
 
   # Enable the X11 windowing system.
