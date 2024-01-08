@@ -18,11 +18,14 @@ in [
     name = "filip";
     groups = [ "wheel" "networkmanager" "libvirtd" ];
   })
-  hardwareConfiguration
+  # hardwareConfiguration
   {
-    imports = [
-      ./desktop.nix
-      ./localization.nix
+    imports = builtins.concatLists [
+      [
+        ./desktop.nix
+        ./localization.nix
+      ]
+      hardwareConfiguration
     ];
   }
 ]
