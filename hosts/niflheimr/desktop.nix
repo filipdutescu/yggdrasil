@@ -1,11 +1,7 @@
 { pkgs, ... }:
 {
-  environment.systemPackages = with pkgs; [
-    spotify
-    ungoogled-chromium
-  ];
-
   # Enable the X11 windowing system.
+  # TODO: move to Wayland
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.

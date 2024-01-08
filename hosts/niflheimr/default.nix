@@ -8,6 +8,10 @@ in [
     inherit stateVersion;
     name = "niflheimr";
     networkInterfaceNames = [ "enp7s0" "wlp0s20f3" ];
+    systemPackages = with pkgs; [
+      spotify
+      ungoogled-chromium
+    ];
   })
   (userUtils.makeUser {
     inherit stateVersion;
@@ -17,8 +21,8 @@ in [
   hardwareConfiguration
   {
     imports = [
-        ./desktop.nix
-        ./localization.nix
-      ];
+      ./desktop.nix
+      ./localization.nix
+    ];
   }
 ]
