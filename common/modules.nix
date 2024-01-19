@@ -2,10 +2,19 @@
 {
   nix = {
     package = pkgs.nixFlakes;
+
     gc = {
       automatic = true;
       dates = "weekly";
+      persistent = true;
+      options = "--delete-older-than 7d";
     };
+
+    optimise = {
+      automatic = true;
+      dates = [ "weekly" ]
+    };
+
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
@@ -28,6 +37,7 @@
 
   environment.shellAliases = {
     adios = "shutdown now";
+    cat = "bat --color=auto";
     cp = "cp -i";
     fd = "fd --color=auto";
     grep = "rg --color=auto";
