@@ -27,24 +27,28 @@ with builtins; {
       }
       => { ... }
   */
-  makeHost = {
-    # the host name for the system to be created
-    name,
-    # packages to be installed system-wide
-    systemPackages ? [],
-    # the names of the network interfaces which should be configured
-    networkInterfaceNames,
-    # NixOS system state version for which the configuration is written
-    stateVersion
+  makeHost =
+    {
+      # the host name for the system to be created
+      name
+    , # packages to be installed system-wide
+      systemPackages ? [ ]
+    , # the names of the network interfaces which should be configured
+      networkInterfaceNames
+    , # NixOS system state version for which the configuration is written
+      stateVersion
     }:
     let
-      networkInterfaces = listToAttrs (map (ni: {
-        name = "${ni}";
-        value = {
-          useDHCP = lib.mkDefault true;
-        };
-      }) networkInterfaceNames);
-    in {
+      networkInterfaces = listToAttrs (map
+        (ni: {
+          name = "${ni}";
+          value = {
+            useDHCP = lib.mkDefault true;
+          };
+        })
+        networkInterfaceNames);
+    in
+    {
       # Use the systemd-boot EFI boot loader.
       boot.loader = {
         systemd-boot.enable = true;
@@ -128,63 +132,67 @@ with builtins; {
       => { ... }
   */
   makeHardware = with lib.attrsets; {
-    # Name of the LUKS device to be decrypted
-    luksDeviceName,
-    # LUKS device to be decrypted
-    luksDevice,
-    # List of kernel modules in the initial ramdisk used during the boot process, which must
-    # include all modules necessary for mounting the root device
-    initrdMods,
-    # Kernel modules always loaded by initrd
-    initrdKernelMods ? [],
-    # List of kernel modules to be loaded in the second stage of the boot process
-    kernelMods,
-    # List of parameters with which the kernel should be started up
-    kernelParams ? [],
-    # List of file system devices that should be setup, alongside their paths, types and mount
-    # options (if applicable)
-    fileSystemEntries,
-    # Governor type to be used to regulate the frequency of the available CPUs
-    cpuFreqGovernor,
-    # Intel/AMD specific CPU settings, such as updating microcode
-    cpu,
-  }:
-  let
-    fileSystemPaths = mergeAttrsList (map (fs@{ path, device, fsType, ... }: 
-    if hasAttr "options" fs then {
-      "${path}" = { inherit (fs) device fsType options; };
-    } else {
-      "${path}" = { inherit device fsType; };
-    }) fileSystemEntries);
-  in {
-    boot = {
-      initrd = {
-        # setup kernel modules used during the boot process and used to mount the root device
-        availableKernelModules = initrdMods;
-        # setup kernel modules to be loaded by initrd
-        kernelModules = initrdKernelMods;
+                                      # Name of the LUKS device to be decrypted
+                                      luksDeviceName
+                                    , # LUKS device to be decrypted
+                                      luksDevice
+                                    , # List of kernel modules in the initial ramdisk used during the boot process, which must
+                                      # include all modules necessary for mounting the root device
+                                      initrdMods
+                                    , # Kernel modules always loaded by initrd
+                                      initrdKernelMods ? [ ]
+                                    , # List of kernel modules to be loaded in the second stage of the boot process
+                                      kernelMods
+                                    , # List of parameters with which the kernel should be started up
+                                      kernelParams ? [ ]
+                                    , # List of file system devices that should be setup, alongside their paths, types and mount
+                                      # options (if applicable)
+                                      fileSystemEntries
+                                    , # Governor type to be used to regulate the frequency of the available CPUs
+                                      cpuFreqGovernor
+                                    , # Intel/AMD specific CPU settings, such as updating microcode
+                                      cpu
+                                    ,
+                                    }:
+    let
+      fileSystemPaths = mergeAttrsList (map
+        (fs@{ path, device, fsType, ... }:
+          if hasAttr "options" fs then {
+            "${path}" = { inherit (fs) device fsType options; };
+          } else {
+            "${path}" = { inherit device fsType; };
+          })
+        fileSystemEntries);
+    in
+    {
+      boot = {
+        initrd = {
+          # setup kernel modules used during the boot process and used to mount the root device
+          availableKernelModules = initrdMods;
+          # setup kernel modules to be loaded by initrd
+          kernelModules = initrdKernelMods;
 
-        # configure the LUKS device to be decrypted
-        luks.devices."${luksDeviceName}".device = luksDevice;
+          # configure the LUKS device to be decrypted
+          luks.devices."${luksDeviceName}".device = luksDevice;
+        };
+        kernelModules = kernelMods;
+        kernelParams = kernelParams;
+        extraModulePackages = [ ];
       };
-      kernelModules = kernelMods;
-      kernelParams = kernelParams;
-      extraModulePackages = [];
+
+      # configure partitions and devices and the options to be used to load them
+      fileSystems = fileSystemPaths;
+
+      swapDevices = [ ];
+
+      # setup the system architecture
+      nixpkgs.hostPlatform = lib.mkDefault system;
+
+      # configure CPU related settings (power managerment, microcode updating etc.)
+      powerManagement.cpuFreqGovernor = lib.mkDefault cpuFreqGovernor;
+      hardware = {
+        cpu = cpu;
+        enableRedistributableFirmware = lib.mkDefault true;
+      };
     };
-
-    # configure partitions and devices and the options to be used to load them
-    fileSystems = fileSystemPaths;
-
-    swapDevices = [];
-  
-    # setup the system architecture
-    nixpkgs.hostPlatform = lib.mkDefault system;
-
-    # configure CPU related settings (power managerment, microcode updating etc.)
-    powerManagement.cpuFreqGovernor = lib.mkDefault cpuFreqGovernor;
-    hardware = {
-      cpu = cpu;
-      enableRedistributableFirmware = lib.mkDefault true;
-    };
-  };
 }

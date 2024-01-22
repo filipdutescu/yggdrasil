@@ -9,9 +9,9 @@
       enable = true;
       options = {
         hyperlinks = true;
-        light = false;      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+        light = false; # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
         line-numbers = true;
-        navigate = true;    # use n and N to move between diff sections
+        navigate = true; # use n and N to move between diff sections
         side-by-side = true;
         whitespace-error-style = "22 reverse";
       };

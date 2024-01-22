@@ -2,7 +2,8 @@ let
   modules = import ./modules.nix;
   palette = import ./palette.nix;
   prompt = import ./prompt.nix;
-in {
+in
+{
   programs.starship = {
     enable = true;
 

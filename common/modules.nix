@@ -19,9 +19,9 @@
       experimental-features = nix-command flakes
     '';
   };
-   
+
   # do not install anything by default
-  environment.defaultPackages = [];
+  environment.defaultPackages = [ ];
   environment.systemPackages = with pkgs; [
     bat
     curl

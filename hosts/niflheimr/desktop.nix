@@ -10,7 +10,7 @@
 
   sound.enable = pkgs.lib.mkForce false;
   hardware.pulseaudio.enable = pkgs.lib.mkForce false;
-  
+
   services.pipewire = {
     enable = true;
     audio.enable = true;
@@ -28,9 +28,9 @@
     ];
 
     fontconfig.defaultFonts = {
-      serif = ["Linux Libertine"];
-      sansSerif = ["Inter"];
-      monospace = ["FiraCode Nerd Font Mono"];
+      serif = [ "Linux Libertine" ];
+      sansSerif = [ "Inter" ];
+      monospace = [ "FiraCode Nerd Font Mono" ];
     };
   };
 

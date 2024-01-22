@@ -76,9 +76,9 @@ in
         prime = {
           # https://nixos.wiki/wiki/Nvidia#Optimus_PRIME_Option_A:_Offload_Mode
           offload = {
-      			enable = true;
-      			enableOffloadCmd = true;
-      		};
+            enable = true;
+            enableOffloadCmd = true;
+          };
 
           intelBusId = "PCI:00:02:0";
           nvidiaBusId = "PCI:01:00:0";

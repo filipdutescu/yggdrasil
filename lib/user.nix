@@ -23,40 +23,42 @@
       }
       => { ... }
   */
-  makeUser = {
-    # NixOS system state version for which the configuration is written
-    stateVersion,
-    # Name of the user to be created
-    name,
-    # Groups that the created user should be a part of
-    groups,
-    # The UID of the created user
-    uid ? null,
-    # The default shell of the created user
-    shell ? null,
-    ... }: {
-    imports = [ home-manager.nixosModules.home-manager ];
+  makeUser =
+    {
+      # NixOS system state version for which the configuration is written
+      stateVersion
+    , # Name of the user to be created
+      name
+    , # Groups that the created user should be a part of
+      groups
+    , # The UID of the created user
+      uid ? null
+    , # The default shell of the created user
+      shell ? null
+    , ...
+    }: {
+      imports = [ home-manager.nixosModules.home-manager ];
 
-    users = {
-      # only allow users to be created through the system configuration
-      mutableUsers = false;
+      users = {
+        # only allow users to be created through the system configuration
+        mutableUsers = false;
 
-      users."${name}" = {
-        inherit uid name shell;
-        isNormalUser = true;
-        extraGroups = groups;
-        initialPassword = "nixos";
+        users."${name}" = {
+          inherit uid name shell;
+          isNormalUser = true;
+          extraGroups = groups;
+          initialPassword = "nixos";
+        };
+      };
+
+      home-manager = {
+        # follow system packages
+        useGlobalPkgs = true;
+        # allow user packages to be defined through `users.users.<name>.packages`
+        useUserPackages = true;
+
+        users."${name}" = import ../users/${name}/home.nix;
+        extraSpecialArgs = { inherit stateVersion; };
       };
     };
-
-    home-manager = {
-      # follow system packages
-      useGlobalPkgs = true;
-      # allow user packages to be defined through `users.users.<name>.packages`
-      useUserPackages = true;
-
-      users."${name}" = import ../users/${name}/home.nix;
-      extraSpecialArgs = { inherit stateVersion; };
-    };
-  };
 }

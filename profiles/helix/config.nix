@@ -10,7 +10,7 @@
     color-modes = true;
     bufferline = "always";
     auto-save = true;
-    
+
     cursor-shape = {
       insert = "bar";
       normal = "block";
@@ -18,9 +18,9 @@
     };
 
     statusline = {
-      left = ["mode" "spacer" "spinner" "spacer" "version-control"];
-      center = ["file-name"];
-      right = ["workspace-diagnostics" "file-type" "selections" "position" "file-encoding"];
+      left = [ "mode" "spacer" "spinner" "spacer" "version-control" ];
+      center = [ "file-name" ];
+      right = [ "workspace-diagnostics" "file-type" "selections" "position" "file-encoding" ];
       separator = "│";
     };
 
