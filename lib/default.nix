@@ -6,9 +6,10 @@
     hostModules = import ../hosts/${hostname} { inherit pkgs home-manager system lib stateVersion; };
   in lib.nixosSystem {
     inherit system;
-    
-    modules = hostModules ++ [
+
+    modules = [
       coreModules
+      hostModules
     ];
   };
 }
