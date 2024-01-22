@@ -41,6 +41,4 @@
     ../../profiles/zellij
     ../../profiles/zsh
   ];
-
-  services.gpg-agent.enable = true;
 }
