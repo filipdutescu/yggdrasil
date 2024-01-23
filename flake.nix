@@ -8,9 +8,14 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, sops-nix, ... }@inputs:
     let
       pkgs = import nixpkgs {
         inherit system;
@@ -42,9 +47,7 @@
       # is affected by this option.
       stateVersion = "23.05"; # Did you read the comment?
 
-      utils = import ./lib {
-        inherit pkgs inputs stateVersion;
-      };
+      utils = import ./lib { inherit pkgs inputs stateVersion; };
     in
     {
       nixosConfigurations = {

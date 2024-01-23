@@ -1,4 +1,4 @@
-{ home-manager, ... }:
+{ config, home-manager, ... }:
 {
   /* Configure the user related settings and additional software, such as home-manager.
 
@@ -47,7 +47,8 @@
           inherit uid name shell;
           isNormalUser = true;
           extraGroups = groups;
-          initialPassword = "nixos";
+          hashedPasswordFile = config.sops.secrets.hashed_password.path;
+          home = "/home/${name}";
         };
       };
 

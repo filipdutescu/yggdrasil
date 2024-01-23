@@ -8,6 +8,7 @@
 
       modules = [
         ../common/modules.nix
+        ../common/sops-nix.nix
         ../hosts/${hostname}
       ];
     };
