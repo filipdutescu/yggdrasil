@@ -10,15 +10,13 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
-      inherit (nixpkgs) lib;
-
       pkgs = import nixpkgs {
         inherit system;
 
         config.allowUnfreePredicate = pkg:
-          builtins.elem (lib.getName pkg) [
+          builtins.elem (nixpkgs.lib.getName pkg) [
             "nvidia-settings"
             "nvidia-x11"
             "spotify"
@@ -45,7 +43,7 @@
       stateVersion = "23.05"; # Did you read the comment?
 
       utils = import ./lib {
-        inherit pkgs home-manager system lib stateVersion;
+        inherit pkgs inputs stateVersion;
       };
     in
     {

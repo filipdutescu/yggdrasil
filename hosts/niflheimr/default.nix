@@ -1,8 +1,8 @@
-{ pkgs, home-manager, system, lib, stateVersion, ... }:
+{ pkgs, inputs, stateVersion, ... }:
 let
-  userUtils = import ../../lib/user.nix { inherit home-manager; };
-  hostUtils = import ../../lib/host.nix { inherit pkgs system lib; };
-  hardwareConfiguration = import ./hardware.nix { inherit pkgs system lib; };
+  userUtils = import ../../lib/user.nix { inherit (inputs) home-manager; };
+  hostUtils = import ../../lib/host.nix { inherit pkgs; };
+  hardwareConfiguration = import ./hardware.nix { inherit pkgs; };
 in
 {
   imports = [

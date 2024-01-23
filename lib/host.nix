@@ -1,5 +1,10 @@
-{ pkgs, system, lib, ... }:
-with builtins; {
+{ pkgs, ... }:
+with builtins;
+let
+  system = pkgs.system;
+  lib = pkgs.lib;
+in
+{
   /* Configures the host related information, such as network interfaces, bootloader or system
      packages.
 

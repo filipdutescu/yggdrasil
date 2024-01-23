@@ -1,17 +1,14 @@
-{ pkgs, home-manager, system, lib, stateVersion, ... }:
+{ pkgs, inputs, stateVersion, ... }:
 {
   makeSystem = hostname:
-    let
-      coreModules = import ../common/modules.nix { inherit pkgs; };
+    inputs.nixpkgs.lib.nixosSystem {
+      inherit (pkgs) system;
 
-      hostModules = import ../hosts/${hostname} { inherit pkgs home-manager system lib stateVersion; };
-    in
-    lib.nixosSystem {
-      inherit system;
+      specialArgs = { inherit pkgs inputs stateVersion; };
 
       modules = [
-        coreModules
-        hostModules
+        ../common/modules.nix
+        ../hosts/${hostname}
       ];
     };
 }

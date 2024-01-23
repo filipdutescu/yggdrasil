@@ -1,6 +1,6 @@
-{ pkgs, system, lib, ... }:
+{ pkgs, ... }:
 let
-  hostUtils = import ../../lib/host.nix { inherit pkgs system lib; };
+  hostUtils = import ../../lib/host.nix { inherit pkgs; };
 in
 {
   imports = [
@@ -11,7 +11,7 @@ in
       kernelMods = [ "kvm-intel" ];
       kernelParams = [ "splash" ];
       cpuFreqGovernor = "powersave";
-      cpu = { intel.updateMicrocode = lib.mkDefault true; };
+      cpu = { intel.updateMicrocode = pkgs.lib.mkDefault true; };
       fileSystemEntries = [
         {
           path = "/";
