@@ -1,35 +1,33 @@
-{ pkgs, ... }:
-let
-  hostUtils = import ../../lib/host.nix { inherit pkgs; };
-in
-{
+{pkgs, ...}: let
+  hostUtils = import ../../lib/host.nix {inherit pkgs;};
+in {
   imports = [
     (hostUtils.makeHardware {
       luksDeviceName = "cryptroot";
       luksDevice = "/dev/disk/by-uuid/3b7d6d12-4d2d-4c88-9f34-584bc23af5fc";
-      initrdMods = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
-      kernelMods = [ "kvm-intel" ];
-      kernelParams = [ "splash" ];
+      initrdMods = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
+      kernelMods = ["kvm-intel"];
+      kernelParams = ["splash"];
       cpuFreqGovernor = "powersave";
-      cpu = { intel.updateMicrocode = pkgs.lib.mkDefault true; };
+      cpu = {intel.updateMicrocode = pkgs.lib.mkDefault true;};
       fileSystemEntries = [
         {
           path = "/";
           device = "/dev/disk/by-label/NIXROOT";
           fsType = "btrfs";
-          options = [ "subvol=root" "compress=zstd" "noatime" "discard=async" ];
+          options = ["subvol=root" "compress=zstd" "noatime" "discard=async"];
         }
         {
           path = "/home";
           device = "/dev/disk/by-label/NIXROOT";
           fsType = "btrfs";
-          options = [ "subvol=home" "compress=zstd" "noatime" "discard=async" ];
+          options = ["subvol=home" "compress=zstd" "noatime" "discard=async"];
         }
         {
           path = "/nix";
           device = "/dev/disk/by-label/NIXROOT";
           fsType = "btrfs";
-          options = [ "subvol=nix" "compress=zstd" "noatime" "discard=async" ];
+          options = ["subvol=nix" "compress=zstd" "noatime" "discard=async"];
         }
         {
           path = "/boot";
@@ -49,14 +47,14 @@ in
       };
 
       # Load NVIDIA driver for Xorg and Wayland
-      services.xserver.videoDrivers = [ "nvidia" ];
+      services.xserver.videoDrivers = ["nvidia"];
 
       hardware.nvidia = {
         # Use the NVIDIA open source kernel module (not to be confused with the
         # independent third-party "nouveau" open source driver).
-        # Support is limited to the Turing and later architectures. Full list of 
-        # supported GPUs is at: 
-        # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+        # Support is limited to the Turing and later architectures. Full list of
+        # supported GPUs is at:
+        # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
         # Only available from driver 515.43.04+
         # Currently alpha-quality/buggy, so false is currently the recommended setting.
         open = false;

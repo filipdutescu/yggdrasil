@@ -1,7 +1,6 @@
 let
   concatStrings = stringsList: builtins.concatStringsSep "" stringsList;
-in
-{
+in {
   format = concatStrings [
     "$username"
     "$hostname"

@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # Enable the X11 windowing system.
   # TODO: move to Wayland
   services.xserver.enable = true;
@@ -24,13 +23,13 @@
     packages = with pkgs; [
       inter
       libertine
-      (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      (nerdfonts.override {fonts = ["FiraCode"];})
     ];
 
     fontconfig.defaultFonts = {
-      serif = [ "Linux Libertine" ];
-      sansSerif = [ "Inter" ];
-      monospace = [ "FiraCode Nerd Font Mono" ];
+      serif = ["Linux Libertine"];
+      sansSerif = ["Inter"];
+      monospace = ["FiraCode Nerd Font Mono"];
     };
   };
 

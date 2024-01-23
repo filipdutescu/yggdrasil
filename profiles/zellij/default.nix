@@ -7,20 +7,20 @@
     settings = {
       keybinds = {
         unbind = {
-          _args = [ "Ctrl o" ];
+          _args = ["Ctrl o"];
         };
 
         session = {
           bind = {
-            _args = [ "Ctrl e" ];
+            _args = ["Ctrl e"];
             SwitchToMode = "Normal";
           };
         };
 
         shared_except = {
-          _args = [ "session" "locked" ];
+          _args = ["session" "locked"];
           bind = {
-            _args = [ "Ctrl e" ];
+            _args = ["Ctrl e"];
             SwitchToMode = "Session";
           };
         };

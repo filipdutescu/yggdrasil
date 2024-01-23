@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   nix = {
     package = pkgs.nixFlakes;
 
@@ -12,7 +11,7 @@
 
     optimise = {
       automatic = true;
-      dates = [ "weekly" ];
+      dates = ["weekly"];
     };
 
     extraOptions = ''
@@ -21,7 +20,7 @@
   };
 
   # do not install anything by default
-  environment.defaultPackages = [ ];
+  environment.defaultPackages = [];
   environment.systemPackages = with pkgs; [
     bat
     curl

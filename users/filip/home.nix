@@ -1,5 +1,8 @@
-{ pkgs, stateVersion, ... }:
 {
+  pkgs,
+  stateVersion,
+  ...
+}: {
   home.stateVersion = stateVersion; # Please read the comment before changing.
 
   home.packages = with pkgs; [
