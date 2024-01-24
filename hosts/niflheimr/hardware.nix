@@ -10,31 +10,6 @@ in {
       kernelParams = ["splash"];
       cpuFreqGovernor = "powersave";
       cpu = {intel.updateMicrocode = pkgs.lib.mkDefault true;};
-      fileSystemEntries = [
-        {
-          path = "/";
-          device = "/dev/disk/by-label/NIXROOT";
-          fsType = "btrfs";
-          options = ["subvol=root" "compress=zstd" "noatime" "discard=async"];
-        }
-        {
-          path = "/home";
-          device = "/dev/disk/by-label/NIXROOT";
-          fsType = "btrfs";
-          options = ["subvol=home" "compress=zstd" "noatime" "discard=async"];
-        }
-        {
-          path = "/nix";
-          device = "/dev/disk/by-label/NIXROOT";
-          fsType = "btrfs";
-          options = ["subvol=nix" "compress=zstd" "noatime" "discard=async"];
-        }
-        {
-          path = "/boot";
-          device = "/dev/disk/by-label/NIXBOOT";
-          fsType = "vfat";
-        }
-      ];
     })
     # NVIDIA settings
     # For laptops also see https://nixos.wiki/wiki/Nvidia#Configuring_Optimus_PRIME:_Bus_ID_Values_.28Mandatory.29

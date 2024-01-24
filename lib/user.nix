@@ -50,7 +50,8 @@
         inherit uid name shell;
         isNormalUser = true;
         extraGroups = groups;
-        hashedPasswordFile = config.sops.secrets.hashed_password.path;
+        # hashedPasswordFile = config.sops.secrets.hashed_password.path;
+        initialPassword = "nixos";
         home = "/home/${name}";
       };
     };

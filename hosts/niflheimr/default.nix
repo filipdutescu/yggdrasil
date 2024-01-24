@@ -12,6 +12,7 @@
   hostUtils = import ../../lib/host.nix {inherit pkgs;};
 in {
   imports = [
+    ./disko.nix
     ./hardware.nix
     (hostUtils.makeHost {
       inherit stateVersion;

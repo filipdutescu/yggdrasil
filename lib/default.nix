@@ -13,6 +13,7 @@
       modules = [
         ../common/modules.nix
         ../common/sops-nix.nix
+        inputs.disko.nixosModules.disko
         ../hosts/${hostname}
       ];
     };
