@@ -84,6 +84,8 @@ in {
       networkmanager.enable = true;
     };
 
+    environment.systemPackages = systemPackages;
+
     # NixOS specific settings
     nixpkgs.pkgs = pkgs;
     system.stateVersion = stateVersion;
