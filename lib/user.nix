@@ -36,8 +36,6 @@
     groups,
     # The UID of the created user
     uid ? null,
-    # The default shell of the created user
-    shell ? null,
     ...
   }: {
     imports = [home-manager.nixosModules.home-manager];
@@ -47,12 +45,10 @@
       mutableUsers = false;
 
       users."${name}" = {
-        inherit uid name shell;
+        inherit uid name;
         isNormalUser = true;
         extraGroups = groups;
-        # hashedPasswordFile = config.sops.secrets.hashed_password.path;
-        initialPassword = "nixos";
-        home = "/home/${name}";
+        hashedPasswordFile = config.sops.secrets.hashed_password.path;
       };
     };
 
