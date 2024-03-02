@@ -19,6 +19,7 @@ in {
       name = "niflheimr";
       networkInterfaceNames = ["enp7s0" "wlp0s20f3"];
       systemPackages = with pkgs; [
+        libreoffice-fresh
         spotify
         ungoogled-chromium
       ];
