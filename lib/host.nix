@@ -79,10 +79,14 @@ in {
       # using the original `hardware-configuration.nix` it is happy
       # moving it to this setup, with a function, sometimes it allows it
       # sometimes it is angry at the one disturbing its sleep
-      interfaces = networkInterfaces;
-      useDHCP = false;
-      networkmanager.enable = true;
+      # interfaces = networkInterfaces;
+      # useDHCP = false;
+      networkmanager.enable = false;
+      useNetworkd = true;
+      firewall.enable = true;
+      wireless.iwd.enable = true;
     };
+    systemd.network.enable = true;
 
     environment.systemPackages = systemPackages;
 

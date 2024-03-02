@@ -31,5 +31,6 @@ in {
     })
     ./desktop.nix
     ./localization.nix
+    ./networking.nix
   ];
 }
