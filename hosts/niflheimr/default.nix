@@ -17,7 +17,7 @@ in {
     (hostUtils.makeHost {
       inherit stateVersion;
       name = "niflheimr";
-      networkInterfaceNames = ["enp7s0" "wlp0s20f3"];
+      networkInterfaceNames = ["enp7s0" "wlan0"];
       systemPackages = with pkgs; [
         libreoffice-fresh
         spotify
@@ -31,6 +31,5 @@ in {
     })
     ./desktop.nix
     ./localization.nix
-    ./networking.nix
   ];
 }

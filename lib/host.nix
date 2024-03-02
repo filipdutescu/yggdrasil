@@ -67,7 +67,7 @@ in {
       # nice boot screen and prompt for LUKS password
       plymouth = {
         enable = true;
-        logo = "${pkgs.nixos-icons}/share/icons/hicolor/48x48/apps/nix-snowflake.png";
+        logo = "${pkgs.nixos-icons}/share/icons/hicolor/48x48/apps/nix-snowflake-white.png";
       };
     };
 
@@ -80,13 +80,16 @@ in {
       # moving it to this setup, with a function, sometimes it allows it
       # sometimes it is angry at the one disturbing its sleep
       # interfaces = networkInterfaces;
-      # useDHCP = false;
-      networkmanager.enable = false;
-      useNetworkd = true;
+      useDHCP = pkgs.lib.mkDefault true;
+
+      networkmanager.enable = true;
+      networkmanager.wifi.backend = "iwd";
+      networkmanager.dhcp = "internal";
+
       firewall.enable = true;
       wireless.iwd.enable = true;
+      dhcpcd.enable = false;
     };
-    systemd.network.enable = true;
 
     environment.systemPackages = systemPackages;
 
