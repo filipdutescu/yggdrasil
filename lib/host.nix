@@ -50,12 +50,13 @@ in {
       })
       networkInterfaceNames);
   in {
-    # Use the systemd-boot EFI boot loader.
-    boot.loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
     boot = {
+      # Use the systemd-boot EFI boot loader.
+      loader = {
+        systemd-boot.enable = true;
+        efi.canTouchEfiVariables = true;
+      };
+
       initrd = {
         verbose = false;
         systemd.enable = true;
@@ -79,8 +80,8 @@ in {
       # using the original `hardware-configuration.nix` it is happy
       # moving it to this setup, with a function, sometimes it allows it
       # sometimes it is angry at the one disturbing its sleep
-      # interfaces = networkInterfaces;
-      useDHCP = pkgs.lib.mkDefault true;
+      interfaces = networkInterfaces;
+      useDHCP = pkgs.lib.mkDefault false;
 
       networkmanager.enable = true;
       networkmanager.wifi.backend = "iwd";
@@ -129,10 +130,6 @@ in {
   */
   makeHardware = with lib.attrsets;
     {
-      # Name of the LUKS device to be decrypted
-      luksDeviceName,
-      # LUKS device to be decrypted
-      luksDevice,
       # List of kernel modules in the initial ramdisk used during the boot process, which must
       # include all modules necessary for mounting the root device
       initrdMods,
@@ -153,9 +150,6 @@ in {
           availableKernelModules = initrdMods;
           # setup kernel modules to be loaded by initrd
           kernelModules = initrdKernelMods;
-
-          # configure the LUKS device to be decrypted
-          luks.devices."${luksDeviceName}".device = luksDevice;
         };
         kernelModules = kernelMods;
         kernelParams = kernelParams;

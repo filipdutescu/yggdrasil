@@ -3,8 +3,6 @@
 in {
   imports = [
     (hostUtils.makeHardware {
-      luksDeviceName = "cryptroot";
-      luksDevice = "/dev/disk/by-uuid/3b7d6d12-4d2d-4c88-9f34-584bc23af5fc";
       initrdMods = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
       kernelMods = ["kvm-intel"];
       kernelParams = ["splash"];
