@@ -1,6 +1,6 @@
 {pkgs, ...}: {
+  services.xserver.enable = true; # this is needed even if only using Wayland
   # Ensure the legacy software out
-  services.xserver.enable = pkgs.lib.mkForce false;
   sound.enable = pkgs.lib.mkForce false;
   hardware.pulseaudio.enable = pkgs.lib.mkForce false;
 
