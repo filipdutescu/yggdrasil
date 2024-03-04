@@ -88,7 +88,14 @@ in {
       networkmanager.dhcp = "internal";
 
       firewall.enable = true;
-      wireless.iwd.enable = true;
+      wireless.iwd = {
+        enable = true;
+        settings = {
+          Settings = {
+            AutoConnect = true;
+          };
+        };
+      };
       dhcpcd.enable = false;
     };
 
