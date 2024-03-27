@@ -56,11 +56,13 @@
     gmg = "git merge";
     gpl = "git pull";
     gph = "git push";
-    grs = "git reset";
+    grs = "git restore";
+    grt = "git reset";
     grb = "git rebase";
     grm = "git remote";
     gsh = "git stash";
     gss = "git status";
+    gsw = "git switch";
     gt = "git tag";
     gw = "git worktree";
   };
