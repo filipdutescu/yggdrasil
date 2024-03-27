@@ -135,42 +135,41 @@ in {
    }
    => { ... }
   */
-  makeHardware = with lib.attrsets;
-    {
-      # List of kernel modules in the initial ramdisk used during the boot process, which must
-      # include all modules necessary for mounting the root device
-      initrdMods,
-      # Kernel modules always loaded by initrd
-      initrdKernelMods ? [],
-      # List of kernel modules to be loaded in the second stage of the boot process
-      kernelMods,
-      # List of parameters with which the kernel should be started up
-      kernelParams ? [],
-      # Governor type to be used to regulate the frequency of the available CPUs
-      cpuFreqGovernor,
-      # Intel/AMD specific CPU settings, such as updating microcode
-      cpu,
-    }: {
-      boot = {
-        initrd = {
-          # setup kernel modules used during the boot process and used to mount the root device
-          availableKernelModules = initrdMods;
-          # setup kernel modules to be loaded by initrd
-          kernelModules = initrdKernelMods;
-        };
-        kernelModules = kernelMods;
-        kernelParams = kernelParams;
-        extraModulePackages = [];
+  makeHardware = {
+    # List of kernel modules in the initial ramdisk used during the boot process, which must
+    # include all modules necessary for mounting the root device
+    initrdMods,
+    # Kernel modules always loaded by initrd
+    initrdKernelMods ? [],
+    # List of kernel modules to be loaded in the second stage of the boot process
+    kernelMods,
+    # List of parameters with which the kernel should be started up
+    kernelParams ? [],
+    # Governor type to be used to regulate the frequency of the available CPUs
+    cpuFreqGovernor,
+    # Intel/AMD specific CPU settings, such as updating microcode
+    cpu,
+  }: {
+    boot = {
+      initrd = {
+        # setup kernel modules used during the boot process and used to mount the root device
+        availableKernelModules = initrdMods;
+        # setup kernel modules to be loaded by initrd
+        kernelModules = initrdKernelMods;
       };
-
-      # setup the system architecture
-      nixpkgs.hostPlatform = lib.mkDefault system;
-
-      # configure CPU related settings (power managerment, microcode updating etc.)
-      powerManagement.cpuFreqGovernor = lib.mkDefault cpuFreqGovernor;
-      hardware = {
-        cpu = cpu;
-        enableRedistributableFirmware = lib.mkDefault true;
-      };
+      kernelModules = kernelMods;
+      kernelParams = kernelParams;
+      extraModulePackages = [];
     };
+
+    # setup the system architecture
+    nixpkgs.hostPlatform = lib.mkDefault system;
+
+    # configure CPU related settings (power managerment, microcode updating etc.)
+    powerManagement.cpuFreqGovernor = lib.mkDefault cpuFreqGovernor;
+    hardware = {
+      cpu = cpu;
+      enableRedistributableFirmware = lib.mkDefault true;
+    };
+  };
 }
